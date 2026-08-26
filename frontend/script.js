@@ -1,4 +1,4 @@
-const API = "http://127.0.0.1:8000";
+const API = (document.body.dataset.apiBase || "http://127.0.0.1:8000").replace(/\/$/, "");
 
 const table = document.querySelector("#device-table");
 const errorBox = document.querySelector("#error");
@@ -6,61 +6,83 @@ const apiStatus = document.querySelector("#api-status");
 const statusDot = document.querySelector("#status-dot");
 
 function statusClass(status) {
-  return status.toLowerCase();
+  return String(status).toLowerCase();
+}
+
+function renderDevices(devices) {
+  table.replaceChildren();
+
+  for (const device of devices) {
+    const row = document.createElement("tr");
+
+    const idCell = document.createElement("td");
+    idCell.textContent = String(device.id);
+
+    const nameCell = document.createElement("td");
+    const name = document.createElement("strong");
+    name.textContent = device.name;
+    nameCell.appendChild(name);
+
+    const typeCell = document.createElement("td");
+    typeCell.textContent = device.type;
+
+    const statusCell = document.createElement("td");
+    const status = document.createElement("span");
+    status.className = `status ${statusClass(device.status)}`;
+    status.textContent = device.status;
+    statusCell.appendChild(status);
+
+    const batteryCell = document.createElement("td");
+    batteryCell.textContent = `${device.battery}%`;
+
+    row.append(idCell, nameCell, typeCell, statusCell, batteryCell);
+    table.appendChild(row);
+  }
 }
 
 async function loadDevices() {
   try {
     errorBox.classList.add("hidden");
-    apiStatus.textContent = "API online";
-    statusDot.style.background = "#72e2ba";
+    apiStatus.textContent = "Checking API...";
+    statusDot.style.background = "#f1c96b";
 
-    const response = await fetch(`${API}/devices`);
+    const healthResponse = await fetch(`${API}/health`, { cache: "no-store" });
+    if (!healthResponse.ok) {
+      throw new Error(`Health check returned ${healthResponse.status}`);
+    }
 
+    const response = await fetch(`${API}/devices`, { cache: "no-store" });
     if (!response.ok) {
-      throw new Error(`API returned ${response.status}`);
+      throw new Error(`Device request returned ${response.status}`);
     }
 
     const devices = await response.json();
 
-    table.innerHTML = devices.map(device => `
-      <tr>
-        <td>${device.id}</td>
-        <td><strong>${device.name}</strong></td>
-        <td>${device.type}</td>
-        <td>
-          <span class="status ${statusClass(device.status)}">
-            ${device.status}
-          </span>
-        </td>
-        <td>${device.battery}%</td>
-      </tr>
-    `).join("");
+    renderDevices(devices);
+    apiStatus.textContent = "API online";
+    statusDot.style.background = "#72e2ba";
 
-    document.querySelector("#total").textContent = devices.length;
-
-    document.querySelector("#online").textContent =
-      devices.filter(device => device.status === "Online").length;
-
-    document.querySelector("#offline").textContent =
-      devices.filter(device => device.status === "Offline").length;
+    document.querySelector("#total").textContent = String(devices.length);
+    document.querySelector("#online").textContent = String(
+      devices.filter((device) => device.status === "Online").length,
+    );
+    document.querySelector("#offline").textContent = String(
+      devices.filter((device) => device.status === "Offline").length,
+    );
 
     const average = devices.length
       ? Math.round(
           devices.reduce((sum, device) => sum + device.battery, 0) /
-          devices.length
+            devices.length,
         )
       : 0;
 
     document.querySelector("#battery").textContent = `${average}%`;
-
   } catch (error) {
     apiStatus.textContent = "API offline";
     statusDot.style.background = "#ff8c8c";
-
     errorBox.textContent =
-      "Could not connect to the FastAPI backend. Start the API on port 8000.";
-
+      "Could not connect to the FastAPI backend. Check the configured API address and start the backend.";
     errorBox.classList.remove("hidden");
   }
 }
