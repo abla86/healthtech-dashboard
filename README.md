@@ -4,6 +4,16 @@ A full-stack demonstration project combining a FastAPI REST API with a responsiv
 
 The application uses simulated healthcare-technology device data and contains no patient or personal health information.
 
+## Start here
+
+| Need | Go to |
+|---|---|
+| Understand the app | [Features](#features) |
+| Understand the API | [API endpoints](#api-endpoints) |
+| Run locally | [Run locally](#run-locally) |
+| Inspect the source | [GitHub repository](https://github.com/abla86/healthtech-dashboard) |
+| See the wider portfolio | [Developer portfolio](https://abla86.github.io/developer-portfolio/) |
+
 ## Features
 
 - FastAPI REST API
@@ -70,4 +80,4 @@ Demonstration / learning project. The README describes the functionality represe
 
 ## Portfolio
 
-Part of the ABLA86 engineering portfolio. This repository contains the implementation and documentation for the project. The repository contains the current implementation and project documentation.
+Part of the ABLA86 engineering portfolio. This repository contains the implementation and documentation for the project.
