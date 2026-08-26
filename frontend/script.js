@@ -1,4 +1,5 @@
 const API = (document.body.dataset.apiBase || "http://127.0.0.1:8000").replace(/\/$/, "");
+const REQUEST_TIMEOUT_MS = 8000;
 
 const table = document.querySelector("#device-table");
 const errorBox = document.querySelector("#error");
@@ -7,6 +8,25 @@ const statusDot = document.querySelector("#status-dot");
 
 function statusClass(status) {
   return String(status).toLowerCase();
+}
+
+function createRequestSignal() {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  return { signal: controller.signal, clear: () => window.clearTimeout(timeoutId) };
+}
+
+function isValidDevice(device) {
+  return (
+    device &&
+    Number.isInteger(device.id) &&
+    typeof device.name === "string" &&
+    typeof device.type === "string" &&
+    ["Online", "Offline", "Maintenance"].includes(device.status) &&
+    Number.isInteger(device.battery) &&
+    device.battery >= 0 &&
+    device.battery <= 100
+  );
 }
 
 function renderDevices(devices) {
@@ -41,22 +61,36 @@ function renderDevices(devices) {
 }
 
 async function loadDevices() {
+  let healthRequest;
+  let deviceRequest;
+
   try {
     errorBox.classList.add("hidden");
     apiStatus.textContent = "Checking API...";
     statusDot.style.background = "#f1c96b";
 
-    const healthResponse = await fetch(`${API}/health`, { cache: "no-store" });
+    healthRequest = createRequestSignal();
+    const healthResponse = await fetch(`${API}/health`, {
+      cache: "no-store",
+      signal: healthRequest.signal,
+    });
     if (!healthResponse.ok) {
       throw new Error(`Health check returned ${healthResponse.status}`);
     }
 
-    const response = await fetch(`${API}/devices`, { cache: "no-store" });
+    deviceRequest = createRequestSignal();
+    const response = await fetch(`${API}/devices`, {
+      cache: "no-store",
+      signal: deviceRequest.signal,
+    });
     if (!response.ok) {
       throw new Error(`Device request returned ${response.status}`);
     }
 
     const devices = await response.json();
+    if (!Array.isArray(devices) || !devices.every(isValidDevice)) {
+      throw new Error("API returned an invalid device payload");
+    }
 
     renderDevices(devices);
     apiStatus.textContent = "API online";
@@ -82,8 +116,13 @@ async function loadDevices() {
     apiStatus.textContent = "API offline";
     statusDot.style.background = "#ff8c8c";
     errorBox.textContent =
-      "Could not connect to the FastAPI backend. Check the configured API address and start the backend.";
+      error?.name === "AbortError"
+        ? "The backend did not respond within 8 seconds. Check the API address and backend status."
+        : "Could not connect to the FastAPI backend or the API returned invalid data. Check the configured API address and backend status.";
     errorBox.classList.remove("hidden");
+  } finally {
+    healthRequest?.clear();
+    deviceRequest?.clear();
   }
 }
 
