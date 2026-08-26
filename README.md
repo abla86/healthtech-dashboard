@@ -35,6 +35,7 @@ The baseline CI compiles the Python backend and runs API smoke/integration check
 - Configurable frontend API endpoint
 - Explicit API health check before dashboard data loading
 - Safe text-based DOM rendering for returned device data
+- Frontend request timeout and response-shape validation
 
 ## Technology Stack
 
@@ -98,13 +99,17 @@ ALLOWED_ORIGINS=https://example.example.com
 
 The API does not enable credentialed cross-origin requests, and the documented HTTP methods remain limited to the API operations actually exposed by the application.
 
+### Frontend API resilience
+
+The dashboard gives each health/data request an 8-second timeout and validates the returned device payload before rendering. Invalid payloads are treated as an API failure instead of being rendered into the page.
+
 ## Data safety
 
 Use simulated or non-sensitive demonstration data only. Do not commit patient or other personal health information to this public repository.
 
 ## Status
 
-Demonstration / learning project with automated backend baseline verification. The frontend/API integration includes explicit health checking, configurable endpoint selection, safe DOM rendering and a configurable CORS policy. The README does not claim clinical validation or production readiness.
+Demonstration / learning project with automated backend baseline verification. The frontend/API integration includes explicit health checking, configurable endpoint selection, safe DOM rendering, response validation, request timeouts and a configurable CORS policy. The README does not claim clinical validation or production readiness.
 
 ## Portfolio
 
