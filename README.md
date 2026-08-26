@@ -27,7 +27,7 @@ The baseline CI compiles the Python backend and runs API smoke/integration check
 - API health endpoint
 - Device status and battery metrics
 - Responsive frontend
-- CORS configuration
+- Configurable CORS policy
 - Pydantic validation
 - Create, read and delete API operations
 - Interactive refresh and dashboard metrics
@@ -88,13 +88,23 @@ pytest -q
 
 The frontend API endpoint is configured through the `<body data-api-base="...">` attribute in `frontend/index.html`. Change that value when the API is hosted somewhere other than the local development address.
 
+### CORS configuration
+
+Local browser origins on `localhost` and `127.0.0.1` are allowed automatically for development. For a hosted frontend, set `ALLOWED_ORIGINS` on the API as a comma-separated list of explicit origins, for example:
+
+```text
+ALLOWED_ORIGINS=https://example.example.com
+```
+
+The API does not enable credentialed cross-origin requests, and the documented HTTP methods remain limited to the API operations actually exposed by the application.
+
 ## Data safety
 
 Use simulated or non-sensitive demonstration data only. Do not commit patient or other personal health information to this public repository.
 
 ## Status
 
-Demonstration / learning project with automated backend baseline verification. The frontend/API integration includes explicit health checking, configurable endpoint selection and safe DOM rendering. The README does not claim clinical validation or production readiness.
+Demonstration / learning project with automated backend baseline verification. The frontend/API integration includes explicit health checking, configurable endpoint selection, safe DOM rendering and a configurable CORS policy. The README does not claim clinical validation or production readiness.
 
 ## Portfolio
 
