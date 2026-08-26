@@ -32,6 +32,9 @@ The baseline CI compiles the Python backend and runs API smoke/integration check
 - Create, read and delete API operations
 - Interactive refresh and dashboard metrics
 - OpenAPI / Swagger documentation
+- Configurable frontend API endpoint
+- Explicit API health check before dashboard data loading
+- Safe text-based DOM rendering for returned device data
 
 ## Technology Stack
 
@@ -83,13 +86,15 @@ pip install pytest httpx
 pytest -q
 ```
 
+The frontend API endpoint is configured through the `<body data-api-base="...">` attribute in `frontend/index.html`. Change that value when the API is hosted somewhere other than the local development address.
+
 ## Data safety
 
 Use simulated or non-sensitive demonstration data only. Do not commit patient or other personal health information to this public repository.
 
 ## Status
 
-Demonstration / learning project with automated backend baseline verification. The README describes the functionality represented by the repository and does not claim clinical validation or production readiness.
+Demonstration / learning project with automated backend baseline verification. The frontend/API integration includes explicit health checking, configurable endpoint selection and safe DOM rendering. The README does not claim clinical validation or production readiness.
 
 ## Portfolio
 
