@@ -1,4 +1,4 @@
-﻿# HealthTech Dashboard
+# HealthTech Dashboard
 
 A full-stack demonstration project combining a FastAPI REST API with a responsive JavaScript monitoring dashboard.
 
@@ -9,14 +9,12 @@ The application uses simulated healthcare-technology device data and contains no
 - FastAPI REST API
 - Device monitoring dashboard
 - API health endpoint
-- Device status monitoring
-- Battery metrics
+- Device status and battery metrics
 - Responsive frontend
 - CORS configuration
 - Pydantic validation
 - Create, read and delete API operations
-- Interactive refresh
-- Automatic dashboard metrics
+- Interactive refresh and dashboard metrics
 - OpenAPI / Swagger documentation
 
 ## Technology Stack
@@ -61,3 +59,11 @@ python -m venv .venv
 pip install -r requirements.txt
 uvicorn main:app --reload
 ```
+
+## Data safety
+
+Use simulated or non-sensitive demonstration data only. Do not commit patient or other personal health information to this public repository.
+
+## Status
+
+Demonstration / learning project. The README describes the functionality represented by the repository and does not claim clinical validation or production readiness.
