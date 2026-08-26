@@ -70,4 +70,4 @@ Demonstration / learning project. The README describes the functionality represe
 
 ## Portfolio
 
-Part of the ABLA86 engineering portfolio. This repository contains the implementation and documentation for the project. The repository itself is the source of truth for current status, implementation and available tests.
+Part of the ABLA86 engineering portfolio. This repository contains the implementation and documentation for the project. The repository contains the current implementation and project documentation.
