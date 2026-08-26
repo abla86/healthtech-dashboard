@@ -20,6 +20,14 @@
 - Preserved the existing dashboard features and API contract.
 - Updated README documentation at the same time.
 
+## 2026-08-26 — CORS security hardening
+
+- Removed the unrestricted `allow_origins=["*"]` policy from the FastAPI API.
+- Kept local development compatible by allowing `localhost` and `127.0.0.1` origins on arbitrary local ports.
+- Added `ALLOWED_ORIGINS` configuration for explicit hosted frontend origins.
+- Limited cross-origin methods to the API operations exposed by the application.
+- Updated README and SECURITY documentation to reflect the configuration model.
+
 ## Status
 
 Demonstration project with automated backend baseline verification and hardened frontend/API integration. Clinical validation and production readiness are not claimed.
