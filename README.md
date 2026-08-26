@@ -14,6 +14,12 @@ The application uses simulated healthcare-technology device data and contains no
 | Inspect the source | [GitHub repository](https://github.com/abla86/healthtech-dashboard) |
 | See the wider portfolio | [Developer portfolio](https://abla86.github.io/developer-portfolio/) |
 
+## Verification
+
+[![CI](https://github.com/abla86/healthtech-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/abla86/healthtech-dashboard/actions/workflows/ci.yml)
+
+The baseline CI compiles the Python backend and runs API smoke/integration checks covering health, device listing, create/read/delete behaviour, validation and missing-device handling.
+
 ## Features
 
 - FastAPI REST API
@@ -65,9 +71,16 @@ Install backend dependencies:
 ```powershell
 cd backend
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+.\\.venv\\Scripts\\Activate.ps1
 pip install -r requirements.txt
 uvicorn main:app --reload
+```
+
+Run the baseline tests:
+
+```powershell
+pip install pytest httpx
+pytest -q
 ```
 
 ## Data safety
@@ -76,7 +89,7 @@ Use simulated or non-sensitive demonstration data only. Do not commit patient or
 
 ## Status
 
-Demonstration / learning project. The README describes the functionality represented by the repository and does not claim clinical validation or production readiness.
+Demonstration / learning project with automated backend baseline verification. The README describes the functionality represented by the repository and does not claim clinical validation or production readiness.
 
 ## Portfolio
 
