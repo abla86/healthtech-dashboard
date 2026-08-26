@@ -28,6 +28,13 @@
 - Limited cross-origin methods to the API operations exposed by the application.
 - Updated README and SECURITY documentation to reflect the configuration model.
 
+## 2026-08-26 — Frontend API resilience
+
+- Added an 8-second timeout to health and device requests using `AbortController`.
+- Added response-shape validation for device IDs, names, types, statuses and battery ranges before rendering.
+- Kept safe DOM rendering and the existing API contract unchanged.
+- Added specific timeout/invalid-payload error handling for clearer failure states.
+
 ## Status
 
 Demonstration project with automated backend baseline verification and hardened frontend/API integration. Clinical validation and production readiness are not claimed.
