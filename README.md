@@ -67,3 +67,7 @@ Use simulated or non-sensitive demonstration data only. Do not commit patient or
 ## Status
 
 Demonstration / learning project. The README describes the functionality represented by the repository and does not claim clinical validation or production readiness.
+
+## Portfolio
+
+Part of the ABLA86 engineering portfolio. This repository contains the implementation and documentation for the project. The repository itself is the source of truth for current status, implementation and available tests.
