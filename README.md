@@ -114,3 +114,7 @@ Demonstration / learning project with automated backend baseline verification. T
 ## Portfolio
 
 Part of the ABLA86 engineering portfolio. This repository contains the implementation and documentation for the project.
+
+## Change-control audit
+
+See [docs/REPOSITORY-CHANGE-AUDIT-2026-08-28.md](docs/REPOSITORY-CHANGE-AUDIT-2026-08-28.md) for the repository change-control and traceability record.
