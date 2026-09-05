@@ -54,3 +54,29 @@ def test_validation_rejects_invalid_battery():
 def test_missing_device_returns_404():
     response = client.get("/devices/999999")
     assert response.status_code == 404
+
+
+def test_create_validation_rejects_invalid_status():
+    response = client.post(
+        "/devices",
+        json={
+            "name": "Invalid Status Device",
+            "type": "Sensor",
+            "status": "Unknown",
+            "battery": 50,
+        },
+    )
+    assert response.status_code == 422
+
+
+def test_create_validation_rejects_short_name():
+    response = client.post(
+        "/devices",
+        json={
+            "name": "X",
+            "type": "Sensor",
+            "status": "Online",
+            "battery": 50,
+        },
+    )
+    assert response.status_code == 422
